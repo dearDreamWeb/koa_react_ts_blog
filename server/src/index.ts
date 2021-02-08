@@ -21,7 +21,8 @@ app.use(session(sessionConfig, app));
 
 
 const corsOptions = {
-    origin: 'http://localhost:8080'
+    origin: 'http://localhost:8080',
+    credentials: true
 }
 
 app.use(bodyParser())

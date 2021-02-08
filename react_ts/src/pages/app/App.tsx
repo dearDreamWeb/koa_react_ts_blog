@@ -1,20 +1,19 @@
 import React, { FC, useEffect } from 'react';
-import axios from 'axios';
+import { api, getInfo } from '../../service/api/user';
 
 const App: FC<{}> = () => {
-  useEffect(() => {
-    axios({
-      method: 'get',
-      url: 'http://localhost:3030/api',
-      params: {
-        name: 'wxb'
-      }
-    }).then(res => console.log(res)).catch(err => console.log(err))
-  }, [])
+  const send = () => {
+    api({ name: 'wxb' }).then(res => console.log(res)).catch(err => console.log(err))
+  }
+
+  const _getInfo = () => {
+    getInfo({ name: 'wxb' }).then(res => console.log(res)).catch(err => console.log(err))
+  }
 
   return (
     <div className="App">
-      app
+      <button onClick={send}>发送</button>
+      <button onClick={_getInfo}>接收</button>
     </div>
   );
 }

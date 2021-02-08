@@ -1,15 +1,23 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "noImplicitAny": true,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "outDir": "dist",  // TS文件编译后会放入到此文件夹内
-
-        "types":["node"]
+        "module": "commonjs", /* 模板 */
+        "target": "es5", /* 生成的目标代码 */
+        "outDir": "./dist", /* 生成目录 */
+        "noImplicitAny": false, /* 如果有any类型时报错 */
+        "removeComments": true, /* 移除注释 */
+        "sourceMap": true, /* 是否保留.map文件 */
+        "experimentalDecorators": true, /* 是否支持装饰器 */
+        "emitDecoratorMetadata": true, /* 是否支持元素 */
+        "typeRoots": [ /* 类型声明文件的地址 */
+          "node_modules/@types", /* 默认 */
+        ]
     },
-    "include": [
-        "src/*"                //根据项目的路径指定
-    ]
+    "compileOnSave": true, /* 保存时自动编译 */
+    "include": [      /* 需要编译的文件 */
+        "src/" //根据项目的路径指定
+    ],
+    "exclude": [ /* 编译需要排除的文件 */
+        "node_modules/**",
+        "dist",
+    ],
 }
