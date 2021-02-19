@@ -1,5 +1,8 @@
 import React, { FC, useEffect } from 'react';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import './app.scss';
 import { api, getInfo } from '../../service/api/user';
+import AppAsideLeft from '../../components/appAsideLeft/appAsideLeft';
 
 const App: FC<{}> = () => {
   const send = () => {
@@ -11,10 +14,24 @@ const App: FC<{}> = () => {
   }
 
   return (
-    <div className="App">
-      <button onClick={send}>发送</button>
-      <button onClick={_getInfo}>接收</button>
-    </div>
+    <Router>
+      <Switch>
+        <Route path='/'>
+          <div className="App">
+            <aside className='app_aside_left'>
+              <AppAsideLeft />
+            </aside>
+            <main className='app_main'>
+              <div className='app_main_wrap'>
+                2
+            </div>
+            </main>
+            <aside className='app_aside_right'>3</aside>
+          </div>
+        </Route>
+      </Switch>
+    </Router>
+
   );
 }
 

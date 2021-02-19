@@ -1,0 +1,31 @@
+.App {
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  .app_aside_left,
+  .app_aside_right,
+  .app_main {
+    height: 100%;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none; /* Chrome Safari */
+    }
+  }
+  .app_aside_left,
+  .app_aside_right {
+    min-width: 251px;
+    max-width: 251px;
+  }
+  .app_main {
+    width: 100%;
+    padding: 0 30px;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    .app_main_wrap {
+      height: 130vh;
+    }
+  }
+}
