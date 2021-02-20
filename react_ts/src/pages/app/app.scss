@@ -1,4 +1,5 @@
-.App {
+@import '~antd/dist/antd.css';
+.app {
   display: flex;
   justify-content: space-between;
   height: 100vh;
@@ -24,8 +25,5 @@
     padding: 0 30px;
     border-left: 1px solid #eee;
     border-right: 1px solid #eee;
-    .app_main_wrap {
-      height: 130vh;
-    }
   }
 }

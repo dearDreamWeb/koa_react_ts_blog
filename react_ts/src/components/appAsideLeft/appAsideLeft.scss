@@ -33,5 +33,21 @@
       font-size: 13px;
       color: #999;
     }
+    :global(.ant-input) {
+      &:hover,
+      &:focus {
+        border-color: #d9d9d9;
+        box-shadow: none;
+        outline: none;
+      }
+    }
+    :global(.ant-input-search-button) {
+      &:hover,
+      &:focus {
+        border-color: #d9d9d9;
+        box-shadow: none;
+        outline: none;
+      }
+    }
   }
 }
