@@ -1,8 +1,10 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import styles from './app.scss';
 import { api, getInfo } from '../../service/api/user';
 import AppAsideLeft from '../../components/appAsideLeft/appAsideLeft';
+import AppAsideRight from '../../components/appAsideRight/appAsideRight';
+import Editor from '../../components/editor/editor';
 
 const App: FC<{}> = () => {
   const send = () => {
@@ -16,19 +18,22 @@ const App: FC<{}> = () => {
   return (
     <Router>
       <Switch>
+        <Route path='/edit'>
+          <Editor />
+        </Route>
         <Route path='/'>
           <div className={styles.app}>
             <aside className={styles.app_aside_left}>
               <AppAsideLeft />
             </aside>
             <main className={styles.app_main}>
-              <div>
-                <Route path='/'>
-                  2
+              <Route path='/'>
+                2
                 </Route>
-              </div>
             </main>
-            <aside className={styles.app_aside_right}>3</aside>
+            <aside className={styles.app_aside_right}>
+              <AppAsideRight />
+            </aside>
           </div>
         </Route>
       </Switch>
