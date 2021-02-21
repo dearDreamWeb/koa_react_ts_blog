@@ -1,20 +1,28 @@
-import React, { FC, useEffect, useState, useRef } from 'react';
+import React, { FC, useEffect, useState, useRef, useContext } from 'react';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import styles from './editor.scss';
 import { Input, Modal, Button, Tag, Form, Radio } from 'antd';
+import { ContextData } from '../../useReducer';
+import { queryTags } from '../../service/api/tag';
 
 const Editor: FC<{}> = () => {
     const [editorState, setEditorState] = useState<string>('');
     const [outputHTML, setOutputHTML] = useState<string>('');  // 富文本编辑器输出的html代码
+    const [articleLen, setArticleLen] = useState<number>(0); // 文章的长度
     const [isModalVisible, setIsModalVisible] = useState(false);  // 是否显示弹窗
 
     const previewRef = useRef<HTMLDivElement>(null);
+    const { state, dispatch } = useContext<any>(ContextData);
+    useEffect(() => {
+        queryTags({}).then((res) => console.log(res)).catch((err) => console.log(err));
+    }, [])
 
     // 编辑器改变时触发
     const handleChange = (editorState: any) => {
         setEditorState(editorState);
         setOutputHTML(editorState.toHTML());
+        setArticleLen(editorState.toText().length)
         previewRef.current!.innerHTML = editorState.toHTML();
     }
 
@@ -60,6 +68,7 @@ const Editor: FC<{}> = () => {
                 cancelText='取消'
             >
                 <Form>
+                    <div>分类</div>
                     <Form.Item>
                         <Radio.Group>
                             <Radio.Button value="a">1</Radio.Button>
