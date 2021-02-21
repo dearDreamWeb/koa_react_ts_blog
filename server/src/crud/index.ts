@@ -6,16 +6,33 @@ let pool = mysql.createPool({
   password: "123456",
   database: "koaBlog",
 });
-query = (sql: any, values: any) => {
+query = (sql: any, values: any, ctx: any) => {
   return new Promise((resolve, reject) => {
     //连接池建立链接
     pool.getConnection((err: any, connection: any) => {
-      if (err) throw new Error(`连接失败：${err}`);
+      if (err) {
+        resolve({
+          success: false,
+        });
+        console.log(`连接失败：${err}`);
+        return;
+        // throw new Error(`连接失败：${err}`);
+      }
       connection.query(sql, values, (err: any, data: any) => {
-        if (err) throw new Error(`sql语句失败：${err}`);
+        if (err) {
+          resolve({
+            success: false,
+          });
+          console.log(`sql语句失败：${err}`);
+          return;
+          //   throw new Error(`sql语句失败：${err}`);
+        }
         //释放连接
         pool.releaseConnection(connection);
-        resolve(data);
+        resolve({
+          success: true,
+          data,
+        });
       });
     });
   });

@@ -5,5 +5,8 @@ module.exports = (app: any) => {
   app.use(router.routes()); // 启动路由
 
   // 标签
-  require("./tag")(router, crud);
+  require("./tags")(router, crud);
+
+  // 文章
+  require("./articles")(router, crud);
 };

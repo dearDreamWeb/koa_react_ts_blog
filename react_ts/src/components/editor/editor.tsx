@@ -4,7 +4,8 @@ import 'braft-editor/dist/index.css';
 import styles from './editor.scss';
 import { Input, Modal, Button, Tag, Form, Radio } from 'antd';
 import { ContextData } from '../../useReducer';
-import { queryTags } from '../../service/api/tag';
+import { queryTags } from '../../service/api/tags';
+import { addArticles } from '../../service/api/articles';
 
 const Editor: FC<{}> = () => {
     const [editorState, setEditorState] = useState<string>('');
@@ -14,9 +15,10 @@ const Editor: FC<{}> = () => {
 
     const previewRef = useRef<HTMLDivElement>(null);
     const { state, dispatch } = useContext<any>(ContextData);
-    useEffect(() => {
-        queryTags({}).then((res) => console.log(res)).catch((err) => console.log(err));
-    }, [])
+    
+    // useEffect(() => {
+    //     queryTags({}).then((res) => console.log(res)).catch((err) => console.log(err));
+    // }, [])
 
     // 编辑器改变时触发
     const handleChange = (editorState: any) => {
@@ -29,6 +31,7 @@ const Editor: FC<{}> = () => {
     // 提交弹窗
     const handleOk = () => {
         setIsModalVisible(false);
+        
     }
 
     // 关闭弹窗
