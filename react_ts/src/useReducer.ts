@@ -1,5 +1,8 @@
 import { createContext } from "react";
-const initData = {}; //初始数据
+const initData = {
+  categories: [],
+  tags: []
+}; //初始数据
 
 // 派发事件
 const reducer = (state: any, action: any) => {

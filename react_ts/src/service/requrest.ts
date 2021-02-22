@@ -7,18 +7,20 @@ const $axios = axios.create({
   // headers: {'X-Custom-Header': 'foobar'}      // 请求的headers
 });
 
-export default function request(url: string, options: any = {}) {
+export default async function request(url: string, options: any = {}) {
   if (options.method === "post") {
-    return $axios({
+    let res = await $axios({
       method: options.method,
       url,
       data: options.data,
     });
+    return res.data;
   } else {
-    return $axios({
+    let res = await $axios({
       method: options.method,
       url,
       params: options.data,
     });
+    return res.data;
   }
 }

@@ -27,10 +27,51 @@
     .editor_text,
     .editor_perview {
       padding: 2em;
-      width: 100%;
+      width: 50vw;
+      :global {
+        img {
+          max-width: 100%;
+        }
+        pre {
+          max-width: 100%;
+          max-height: 100%;
+          margin: 10px 0;
+          padding: 15px;
+          overflow: auto;
+          background-color: #f1f2f3;
+          border-radius: 3px;
+          color: #666;
+          font-family: monospace;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 16px;
+          word-wrap: break-word;
+          white-space: pre-wrap;
+        }
+      }
     }
     .editor_perview {
       border-left: 1px solid #ddd;
+    }
+  }
+}
+
+.model_wrap {
+  .cate_wrap {
+    margin-bottom: 20px;
+  }
+  .formItem_title {
+    margin-bottom: 16px;
+    font-size: 21px;
+    color: #909090;
+  }
+  .radio_text,
+  .checkbox_text {
+    font-size: 16px;
+  }
+  :global {
+    .ant-form-item {
+      margin-bottom: 0;
     }
   }
 }

@@ -1,7 +1,9 @@
 import React, { FC, useEffect, useState, useReducer } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import styles from './app.scss';
+import { message } from 'antd';
 import { api, getInfo } from '../../service/api/user';
+import { cateTags } from '../../service/api/articles';
 import AppAsideLeft from '../../components/appAsideLeft/appAsideLeft';
 import AppAsideRight from '../../components/appAsideRight/appAsideRight';
 import Editor from '../../components/editor/editor';
@@ -13,8 +15,24 @@ const App: FC<{}> = () => {
   // <!-- 获取是state和dispatch -->
   const [state, dispatch] = useReducer(reducer, initData);
 
-  const send = () => {
-    api({ name: 'wxb' }).then(res => console.log(res)).catch(err => console.log(err))
+  useEffect(() => {
+    initAllData();
+  }, [])
+
+  const initAllData = () => {
+    cateTags({}).then((res: any) => {
+      if (!res.success) {
+        message.info(res.msg);
+        return;
+      }
+      dispatch({
+        type: 'saveState',
+        payload: {
+          categories: res.categories,
+          tags: res.tags
+        }
+      })
+    }).catch(err => console.log(err))
   }
 
   return (

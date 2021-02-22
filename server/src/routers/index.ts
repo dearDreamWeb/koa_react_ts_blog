@@ -9,4 +9,7 @@ module.exports = (app: any) => {
 
   // 文章
   require("./articles")(router, crud);
+
+  // 分类
+  require("./categories")(router, crud);
 };
