@@ -4,11 +4,15 @@ import 'braft-editor/dist/index.css';
 import styles from './editor.scss';
 import { Input, Modal, Button, Tag, Form, Radio, Checkbox, message } from 'antd';
 import { ContextData } from '../../useReducer';
-import { queryTags } from '../../service/api/tags';
 import { addCategory, queryCategory } from '../../service/api/categories';
+import { addTag, queryTags } from '../../service/api/tags';
 import { addArticles } from '../../service/api/articles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 
-const Editor: FC<{}> = () => {
+
+const Editor: FC<{}> = (props: any) => {
     const { state, dispatch } = useContext<any>(ContextData);
     const [editorState, setEditorState] = useState<string>('');
     const [outputHTML, setOutputHTML] = useState<string>('');  // 富文本编辑器输出的html代码
@@ -18,9 +22,12 @@ const Editor: FC<{}> = () => {
     const [tagInputVis, setTagInputVis] = useState<boolean>(false);  // 添加标输入框是否显示
     const [cateInputVal, setCateInputVal] = useState<string>('');  // 添加分类输入框值
     const [tagInputVal, setTagInputVal] = useState<string>('');    // 添加标签输入框值
+    const [radioVal, setRadioVal] = useState<Number | null>(null);  //  单选组选择的值
+    const [checkboxVal, setCheckboxVal] = useState<Array<CheckboxValueType>>([]);  //  多选组选择的值
 
     const previewRef = useRef<HTMLDivElement>(null);
     const cateInputRef = useRef<any>(null);
+    const tagInputRef = useRef<any>(null);
 
     const { categories, tags } = state;
 
@@ -29,6 +36,13 @@ const Editor: FC<{}> = () => {
             cateInputRef.current?.focus();
         }
     }, [cateInputVis])
+
+
+    useEffect(() => {
+        if (tagInputVis) {
+            tagInputRef.current?.focus();
+        }
+    }, [tagInputVis])
 
     // 编辑器改变时触发
     const handleChange = (editorState: any) => {
@@ -40,20 +54,31 @@ const Editor: FC<{}> = () => {
 
     // 提交弹窗
     const handleOk = () => {
+        if (!radioVal || checkboxVal.length === 0) {
+            message.info('请选择对应的选项')
+            return;
+        }
         setIsModalVisible(false);
         addArticles({
             articleContent: outputHTML,
-            categoryId: 1,
-            tagId: 1,
+            categoryId: radioVal,
+            tagArrId: checkboxVal,
             articleLenght: articleLen
         }).then((res) => {
-            console.log(res);
+            if (!res.success) {
+                message.info(res.msg);
+                return;
+            }
+            message.success(res.msg);
+            props.history.push('/');
         }).catch((err) => console.log(err));
     }
 
     // 关闭弹窗
     const handleCancel = () => {
         setIsModalVisible(false);
+        setRadioVal(null);
+        setCheckboxVal([]);
     }
 
     // 添加分类
@@ -85,6 +110,38 @@ const Editor: FC<{}> = () => {
         setCateInputVis(false);
         setCateInputVal('');
     }
+
+    // 添加标签
+    const addTagHandle = () => {
+        let val: string = tagInputVal ? tagInputVal.trim() : '';
+        if (val) {
+            addTag({ tagName: val }).then((res) => {
+                if (!res.success) {
+                    message.info(res.msg);
+                    return;
+                }
+
+                // 添加成功，重新获取标签
+                queryTags({}).then(resQueryTag => {
+                    if (!resQueryTag.success) {
+                        message.info(resQueryTag.msg);
+                        return;
+                    }
+                    dispatch({
+                        type: 'saveState',
+                        payload: {
+                            tags: resQueryTag.list
+                        }
+                    })
+                }).catch(err => console.log(err));
+            }).catch(err => console.log(err));
+        } else {
+            message.info('请输入内容');
+        }
+        setTagInputVis(false);
+        setTagInputVal('');
+    }
+
 
     return (
         <div className={styles.editor_wrap}>
@@ -122,7 +179,7 @@ const Editor: FC<{}> = () => {
                     <section className={styles.cate_wrap}>
                         <div className={styles.formItem_title}>分类</div>
                         <Form.Item>
-                            <Radio.Group>
+                            <Radio.Group value={radioVal} onChange={(e) => setRadioVal(e.target.value)}>
                                 {
                                     categories.map((item: any) => {
                                         return (
@@ -154,6 +211,7 @@ const Editor: FC<{}> = () => {
                                     <Tag onClick={() => {
                                         setCateInputVis(true);
                                     }}>
+                                        <FontAwesomeIcon icon={faPlus} className={styles.add_icon} />
                                         添加分类
                                     </Tag>
                                 )
@@ -164,7 +222,7 @@ const Editor: FC<{}> = () => {
                     <section>
                         <div className={styles.formItem_title}>标签</div>
                         <Form.Item>
-                            <Checkbox.Group>
+                            <Checkbox.Group value={checkboxVal} onChange={(arr: Array<CheckboxValueType>) => setCheckboxVal(arr)}>
                                 {
                                     tags.map((item: any) => {
                                         return (
@@ -178,6 +236,31 @@ const Editor: FC<{}> = () => {
                                 }
                             </Checkbox.Group>
                         </Form.Item>
+                        {
+                            tagInputVis
+                                ? (
+                                    <Input
+                                        ref={tagInputRef}
+                                        type="text"
+                                        size="small"
+                                        style={{ width: 78 }}
+                                        value={tagInputVal}
+                                        onChange={(e) => setTagInputVal(e.target.value)}
+                                        onBlur={addTagHandle}
+                                        onPressEnter={addTagHandle}
+                                    />
+                                )
+                                : (
+                                    <Tag
+                                        onClick={() => {
+                                            setTagInputVis(true);
+                                        }}>
+                                        <FontAwesomeIcon icon={faPlus} className={styles.add_icon} />
+                                        添加标签
+                                    </Tag>
+                                )
+                        }
+
                     </section>
                 </Form>
 

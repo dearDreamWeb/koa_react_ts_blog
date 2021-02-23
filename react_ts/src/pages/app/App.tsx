@@ -42,9 +42,7 @@ const App: FC<{}> = () => {
     }}>
       <Router>
         <Switch>
-          <Route path='/edit'>
-            <Editor />
-          </Route>
+          <Route path='/edit' component={Editor}></Route>
           <Route path='/'>
             <div className={styles.app}>
               <aside className={styles.app_aside_left}>

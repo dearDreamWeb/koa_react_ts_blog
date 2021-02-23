@@ -1,6 +1,7 @@
 module.exports = (router, crud) => {
 
   const moment = require('moment');
+  const { randomHash } = require('../utls/index');
 
   // 获取文章
   router.get("/article/queryArticles", async (ctx: any) => {
@@ -10,16 +11,37 @@ module.exports = (router, crud) => {
 
   // 添加文章
   router.post("/article/addArticles", async (ctx: any) => {
-    let params: any = ctx.request.body;
-    let data = await crud("INSERT INTO `articles` SET ?", params);
-    if (data.success) {
+    let { articleContent, categoryId, tagArrId, articleLenght } = ctx.request.body;
+    let randomId = randomHash();
+    let data = await crud("INSERT INTO `articles` SET ?", { articleId: randomId, articleContent, categoryId, articleLenght });
+
+    if (!data.success) {
       ctx.body = {
-        ...data,
-        msg: "发布文章成功",
+        success: false,
+        msg: '发布文章失败'
       };
     } else {
-      ctx.body = data;
+      let errorCount: number = 0;
+      for (let i = 0; i < tagArrId.length; i++) {
+        let articleTagData = await crud("INSERT INTO `tags_articles` SET ?", { articleId: randomId, tagId: tagArrId[i] })
+        if (!articleTagData.success) {
+          errorCount++;
+        }
+      }
+      if (errorCount === 0) {
+        ctx.body = {
+          success: true,
+          msg: '发布文章成功'
+        };
+      } else {
+        ctx.body = {
+          success: false,
+          msg: '发布文章失败'
+        };
+      }
     }
+
+
   });
 
   // 获取分类和标签
