@@ -18,8 +18,9 @@ const Editor: FC<{}> = (props: any) => {
     const [outputHTML, setOutputHTML] = useState<string>('');  // 富文本编辑器输出的html代码
     const [articleLen, setArticleLen] = useState<number>(0); // 文章的长度
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);  // 是否显示弹窗
+    const [titleVal, setTitleVal] = useState<string>('');  // 标题
     const [cateInputVis, setCateInputVis] = useState<boolean>(false);  // 添加分类输入框是否显示
-    const [tagInputVis, setTagInputVis] = useState<boolean>(false);  // 添加标输入框是否显示
+    const [tagInputVis, setTagInputVis] = useState<boolean>(false);  // 添加标签输入框是否显示
     const [cateInputVal, setCateInputVal] = useState<string>('');  // 添加分类输入框值
     const [tagInputVal, setTagInputVal] = useState<string>('');    // 添加标签输入框值
     const [radioVal, setRadioVal] = useState<Number | null>(null);  //  单选组选择的值
@@ -54,6 +55,10 @@ const Editor: FC<{}> = (props: any) => {
 
     // 提交弹窗
     const handleOk = () => {
+        if (!titleVal) {
+            message.info('请输入文章标题')
+            return;
+        }
         if (!radioVal || checkboxVal.length === 0) {
             message.info('请选择对应的选项')
             return;
@@ -61,6 +66,7 @@ const Editor: FC<{}> = (props: any) => {
         setIsModalVisible(false);
         addArticles({
             articleContent: outputHTML,
+            articleTitle: titleVal,
             categoryId: radioVal,
             tagArrId: checkboxVal,
             articleLenght: articleLen
@@ -147,6 +153,8 @@ const Editor: FC<{}> = (props: any) => {
         <div className={styles.editor_wrap}>
             <h1 className={styles.editor_header}>
                 <Input
+                    value={titleVal}
+                    onChange={(e) => setTitleVal(e.target.value)}
                     className={styles.editor_header_titleInp}
                     placeholder='输入文章标题...' />
                 <Button

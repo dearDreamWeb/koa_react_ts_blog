@@ -2,10 +2,10 @@ import React, { FC, useEffect, useState, useReducer } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import styles from './app.scss';
 import { message } from 'antd';
-import { api, getInfo } from '../../service/api/user';
 import { cateTags } from '../../service/api/articles';
 import AppAsideLeft from '../../components/appAsideLeft/appAsideLeft';
 import AppAsideRight from '../../components/appAsideRight/appAsideRight';
+import AppCenter from '../../components/appCenter/appCenter';
 import Editor from '../../components/editor/editor';
 import { reducer, ContextData, initData } from "../../useReducer" //引入useReducer文件
 
@@ -29,7 +29,8 @@ const App: FC<{}> = () => {
         type: 'saveState',
         payload: {
           categories: res.categories,
-          tags: res.tags
+          tags: res.tags,
+          articles: res.articles
         }
       })
     }).catch(err => console.log(err))
@@ -50,7 +51,7 @@ const App: FC<{}> = () => {
               </aside>
               <main className={styles.app_main}>
                 <Route path='/'>
-                  2
+                  <AppCenter />
                 </Route>
               </main>
               <aside className={styles.app_aside_right}>

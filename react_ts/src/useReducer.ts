@@ -1,7 +1,8 @@
 import { createContext } from "react";
 const initData = {
   categories: [],
-  tags: []
+  tags: [],
+  articles: []
 }; //初始数据
 
 // 派发事件

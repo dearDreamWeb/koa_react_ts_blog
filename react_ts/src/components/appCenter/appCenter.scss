@@ -1,0 +1,18 @@
+.appCenter_wrap {
+  padding: 15px 0;
+  .lists_wrap {
+    .lists_item {
+      border-bottom: 1px solid #f2f2f2;
+      .lists_item_title {
+        margin-top: 21px;
+        margin-bottom: 10.5px;
+        font-size: 18px;
+        color: #333;
+        cursor: pointer;
+        &:hover {
+          color: #fc7097;
+        }
+      }
+    }
+  }
+}
