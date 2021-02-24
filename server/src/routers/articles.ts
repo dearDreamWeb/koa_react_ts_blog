@@ -6,6 +6,18 @@ module.exports = (router, crud) => {
   // 获取文章
   router.get("/article/queryArticles", async (ctx: any) => {
     let data = await crud("SELECT * FROM `articles`", []);
+    if (!data.success) {
+      ctx.body = {
+        success: false
+      };
+      return;
+    }
+    data.forEach(async (item) => {
+      let cateData = await crud("SELECT * FROM `categories` WHERE categoryId=?", [item.categoryId]);
+      let tagData = await crud("SELECT * FROM `tags_articles` WHERE articleId=?", [item.articleId]);
+      data.categories = cateData.data;
+      data.tags = tagData.data;
+    })
     ctx.body = data;
   });
 
@@ -56,11 +68,25 @@ module.exports = (router, crud) => {
       }
       return;
     }
+    // 把文章的标签和分类整合起来
+    let newArticlesData: any = [...articlesData.data];
+    for (let i = 0; i < newArticlesData.length; i++) {
+      let cateData = await crud("SELECT * FROM `categories` WHERE categoryId=?", [newArticlesData[i].categoryId]);
+      let articleTagData = await crud("SELECT * FROM `tags_articles` WHERE articleId=?", [newArticlesData[i].articleId]);
+      let newTagData: any[] = [];
+      for (let j = 0; j < articleTagData.data.length; j++) {
+        let tagInfo = await crud("SELECT * FROM `tags` WHERE tagId=?", [articleTagData.data[j].tagId]);
+        newTagData.push(tagInfo.data[0]);
+      }
+      newArticlesData[i]['categories'] = cateData.data;
+      newArticlesData[i]['tags'] = newTagData;
+    }
+
     ctx.body = {
       success: true,
       categories: cateData.data,
       tags: tagData.data,
-      articles: articlesData.data,
+      articles: newArticlesData,
       msg: '获取数据成功'
     }
   });

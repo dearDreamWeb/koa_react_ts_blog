@@ -6,11 +6,36 @@
       .lists_item_title {
         margin-top: 21px;
         margin-bottom: 10.5px;
+        width: max-content;
         font-size: 18px;
         color: #333;
         cursor: pointer;
         &:hover {
           color: #fc7097;
+        }
+      }
+      .lists_item_footer {
+        display: flex;
+        margin-bottom: 10.5px;
+        color: #999;
+        .lists_item_footer_item {
+          display: flex;
+          align-items: center;
+          margin-left: 10px;
+
+          :global(svg) {
+            margin-right: 5px;
+          }
+          .tag_item {
+            padding: 0 3px;
+          }
+          .categoryName,
+          .tag_item {
+            cursor: pointer;
+            &:hover {
+              color: #fc7097;
+            }
+          }
         }
       }
     }

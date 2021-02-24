@@ -1,6 +1,9 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
 import styles from './appCenter.scss';
-import { reducer, ContextData, initData } from "../../useReducer" //引入useReducer文件
+import { ContextData } from "../../useReducer" //引入useReducer文件
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarCheck, faFolder, faTag, faEye, faCalculator } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
 
 const AppCenter: FC<{}> = () => {
     // <!-- 获取是state和dispatch -->
@@ -15,6 +18,32 @@ const AppCenter: FC<{}> = () => {
                             className={styles.lists_item}
                         >
                             <h1 className={styles.lists_item_title}>{item.articleTitle}</h1>
+                            <ul className={styles.lists_item_footer}>
+                                <li className={styles.lists_item_footer_item}>
+                                    <FontAwesomeIcon icon={faCalendarCheck} />
+                                    {moment(item.createdDate).format('YYYY-MM-DD')}
+                                </li>
+                                <li className={styles.lists_item_footer_item}>
+                                    <FontAwesomeIcon icon={faFolder} />
+                                    <span className={styles.categoryName}>
+                                        {item.categories[0].categoryName}
+                                    </span>
+                                </li>
+                                <li className={styles.lists_item_footer_item}>
+                                    <FontAwesomeIcon icon={faTag} />
+                                    {item.tags.map((tagItem: any) => {
+                                        return (<span className={styles.tag_item}>{tagItem.tagName}</span>)
+                                    })}
+                                </li>
+                                <li className={styles.lists_item_footer_item}>
+                                    <FontAwesomeIcon icon={faCalculator} />
+                                    字数统计: {item.articleLenght}(字)
+                                    </li>
+                                <li className={styles.lists_item_footer_item}>
+                                    <FontAwesomeIcon icon={faEye} />
+                                    阅读数量: {item.readCount}
+                                </li>
+                            </ul>
                         </li>
                     )
                 })}
