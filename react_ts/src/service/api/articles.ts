@@ -17,3 +17,12 @@ export async function cateTags(options: any) {
     data,
   });
 }
+
+// 获取文章的上一篇和下一篇
+export async function getArticlePreNext(options: any) {
+  const data = { ...options };
+  return request("/article/getArticlePreNext", {
+    method: "get",
+    data,
+  });
+}

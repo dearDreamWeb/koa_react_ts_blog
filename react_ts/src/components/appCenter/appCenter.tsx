@@ -1,11 +1,17 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
 import styles from './appCenter.scss';
+import { withRouter } from 'react-router-dom';
 import { ContextData } from "../../useReducer" //引入useReducer文件
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarCheck, faFolder, faTag, faEye, faCalculator } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 
-const AppCenter: FC<{}> = () => {
+interface Props {
+    history: any;
+}
+
+const AppCenter: FC<Props> = (props) => {
+    const { history } = props;
     // <!-- 获取是state和dispatch -->
     const { state, dispatch } = useContext<any>(ContextData);
     return (
@@ -17,7 +23,12 @@ const AppCenter: FC<{}> = () => {
                             key={item.articleId}
                             className={styles.lists_item}
                         >
-                            <h1 className={styles.lists_item_title}>{item.articleTitle}</h1>
+                            <h1
+                                className={styles.lists_item_title}
+                                onClick={() => history.push(`/article/${item.articleId}`)}
+                            >
+                                {item.articleTitle}
+                            </h1>
                             <ul className={styles.lists_item_footer}>
                                 <li className={styles.lists_item_footer_item}>
                                     <FontAwesomeIcon icon={faCalendarCheck} />
@@ -32,7 +43,9 @@ const AppCenter: FC<{}> = () => {
                                 <li className={styles.lists_item_footer_item}>
                                     <FontAwesomeIcon icon={faTag} />
                                     {item.tags.map((tagItem: any) => {
-                                        return (<span className={styles.tag_item}>{tagItem.tagName}</span>)
+                                        return (<span
+                                            key={tagItem.tagId}
+                                            className={styles.tag_item}>{tagItem.tagName}</span>)
                                     })}
                                 </li>
                                 <li className={styles.lists_item_footer_item}>
@@ -52,4 +65,4 @@ const AppCenter: FC<{}> = () => {
     )
 }
 
-export default AppCenter;
+export default withRouter(AppCenter);

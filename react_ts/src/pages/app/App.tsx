@@ -6,6 +6,7 @@ import { cateTags } from '../../service/api/articles';
 import AppAsideLeft from '../../components/appAsideLeft/appAsideLeft';
 import AppAsideRight from '../../components/appAsideRight/appAsideRight';
 import AppCenter from '../../components/appCenter/appCenter';
+import ArticleDisplay from '../../components/articleDisplay/articleDisplay';
 import Editor from '../../components/editor/editor';
 import { reducer, ContextData, initData } from "../../useReducer" //引入useReducer文件
 
@@ -50,9 +51,14 @@ const App: FC<{}> = () => {
                 <AppAsideLeft />
               </aside>
               <main className={styles.app_main}>
-                <Route path='/'>
-                  <AppCenter />
-                </Route>
+                <Switch>
+                  <Route path='/article/:id'>
+                    <ArticleDisplay />
+                  </Route>
+                  <Route path='/'>
+                    <AppCenter />
+                  </Route>
+                </Switch>
               </main>
               <aside className={styles.app_aside_right}>
                 <AppAsideRight />

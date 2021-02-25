@@ -91,4 +91,37 @@ module.exports = (router, crud) => {
     }
   });
 
+  // 获取文章的上一篇和下一篇
+  router.get('/article/getArticlePreNext', async (ctx: any) => {
+    const { articleId } = ctx.query;
+    let currentArticleIndex: number = 0;
+    let articlesData = await crud("SELECT * FROM `articles` WHERE state =? ORDER BY `createdDate` desc", [0]);
+    if (!articlesData.success) {
+      ctx.body = {
+        success: false,
+      }
+      return;
+    }
+    for (let i = 0; i < articlesData.data.length; i++) {
+      if (articlesData.data[i].articleId === articleId) {
+        currentArticleIndex = i;
+      }
+    }
+
+    ctx.body = {
+      success: true,
+      prevInfo: articlesData.data[currentArticleIndex - 1]
+        ? {
+          articleId: articlesData.data[currentArticleIndex - 1].articleId,
+          title: articlesData.data[currentArticleIndex - 1].articleTitle
+        }
+        : null,
+      nextInfo: articlesData.data[currentArticleIndex + 1]
+        ? {
+          articleId: articlesData.data[currentArticleIndex + 1].articleId,
+          title: articlesData.data[currentArticleIndex + 1].articleTitle
+        }
+        : null,
+    }
+  })
 };

@@ -1,0 +1,30 @@
+.article_wrap {
+  padding: 15px 30px;
+  .article_title {
+    margin-top: 21px;
+    margin-bottom: 10.5px;
+    font-size: 30px;
+  }
+  .article_date {
+    color: #999;
+  }
+  .article_prevNext {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+    .article_prevNext_item {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 400;
+      cursor: pointer;
+      &:hover {
+        color: #fc7097;
+      }
+      .article_prevNext_item_text {
+        margin: 0 10px;
+      }
+    }
+  }
+}
