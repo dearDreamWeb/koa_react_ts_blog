@@ -12,4 +12,7 @@ module.exports = (app: any) => {
 
   // 分类
   require("./categories")(router, crud);
+
+  // 外部资源
+  require("./resources")(router, crud);
 };
