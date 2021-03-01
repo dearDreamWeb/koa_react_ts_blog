@@ -40,4 +40,10 @@ module.exports = (router, crud) => {
             msg: '获取分类成功！'
         }
     })
+
+    // 获取各个分类详情
+    router.get('/category/queryAllCategory', async (ctx: any) => {
+        console.log(ctx.session.info)
+        ctx.body = {}
+    })
 }

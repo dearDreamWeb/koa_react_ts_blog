@@ -5,6 +5,8 @@ import { ContextData } from "../../useReducer" //引入useReducer文件
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarCheck, faFolder, faTag, faEye, faCalculator } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
+import { message } from 'antd';
+import { cateTags } from '../../service/api/articles';
 
 interface Props {
     history: any;
@@ -14,6 +16,28 @@ const AppCenter: FC<Props> = (props) => {
     const { history } = props;
     // <!-- 获取是state和dispatch -->
     const { state, dispatch } = useContext<any>(ContextData);
+
+    useEffect(() => {
+        initAllData();
+    }, [])
+
+    const initAllData = () => {
+        cateTags({}).then((res: any) => {
+            if (!res.success) {
+                message.info(res.msg);
+                return;
+            }
+            dispatch({
+                type: 'saveState',
+                payload: {
+                    categories: res.categories,
+                    tags: res.tags,
+                    articles: res.articles
+                }
+            })
+        }).catch(err => console.log(err))
+    }
+
     return (
         <div className={styles.appCenter_wrap}>
             <ul className={styles.lists_wrap}>

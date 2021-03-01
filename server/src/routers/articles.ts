@@ -81,6 +81,13 @@ module.exports = (router, crud) => {
       newArticlesData[i]['categories'] = cateData.data;
       newArticlesData[i]['tags'] = newTagData;
     }
+    // 存入session
+    ctx.session.info = {
+      categories: cateData.data,
+      tags: tagData.data,
+      articles: newArticlesData
+    }
+
 
     ctx.body = {
       success: true,
@@ -96,7 +103,8 @@ module.exports = (router, crud) => {
     const { articleId } = ctx.query;
     let currentArticleIndex: number = 0;
     let articlesData = await crud("SELECT * FROM `articles` WHERE state =? ORDER BY `createdDate` desc", [0]);
-    if (!articlesData.success) {
+    let addRead = await crud("UPDATE `articles` SET readCount=readCount+1 WHERE articleId = ?", [articleId]);
+    if (!articlesData.success || !addRead.success) {
       ctx.body = {
         success: false,
       }

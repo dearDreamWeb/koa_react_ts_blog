@@ -17,3 +17,12 @@ export async function queryCategory(options: any) {
         data,
     });
 }
+
+// 获取各个分类详情
+export async function queryAllCategory(options: any) {
+    const data = { ...options };
+    return request("/category/queryAllCategory", {
+        method: "get",
+        data,
+    });
+}

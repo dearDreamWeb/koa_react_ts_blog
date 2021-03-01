@@ -22,6 +22,7 @@ const ArticleDisplay: FC<Props> = (props) => {
 
     const articleWrap = useRef<HTMLElement>(null);
 
+    // 获取上一篇和下一篇
     useEffect(() => {
         getArticlePreNext({ articleId: match.params.id }).then((res) => {
             if (res.success) {
@@ -30,6 +31,7 @@ const ArticleDisplay: FC<Props> = (props) => {
         }).catch(err => console.log(err));
     }, [match.params.id])
 
+    // 获取文章的信息
     useEffect(() => {
         if (state.articles.length > 0) {
             state.articles.forEach((item: any) => {
@@ -40,6 +42,7 @@ const ArticleDisplay: FC<Props> = (props) => {
         }
     }, [state, match.params.id])
 
+    // 把文章填充进去
     useEffect(() => {
         articleWrap.current!.innerHTML = articleInfo.articleContent;
     }, [articleInfo])
@@ -72,30 +75,6 @@ const ArticleDisplay: FC<Props> = (props) => {
                         )
                     })
                 }
-                {/* {
-                    prevNext.prev
-                        ? (
-                            <li className={styles.article_prevNext_item}>
-                                <FontAwesomeIcon icon={faChevronLeft} />
-                                <span className={styles.article_prevNext_item_text}>
-                                    上一篇：{prevNext.prev.title}
-                                </span>
-                            </li>
-                        )
-                        : ''
-                }
-                {
-                    prevNext.next
-                        ? (
-                            <li className={styles.article_prevNext_item}>
-                                <span className={styles.article_prevNext_item_text}>
-                                    下一篇：{prevNext.next.title}
-                                </span>
-                                <FontAwesomeIcon icon={faChevronRight} />
-                            </li>
-                        )
-                        : ''
-                } */}
             </ul>
         </div>
     )

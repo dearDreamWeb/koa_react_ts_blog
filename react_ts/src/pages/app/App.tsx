@@ -6,6 +6,7 @@ import { cateTags } from '../../service/api/articles';
 import AppAsideLeft from '../../components/appAsideLeft/appAsideLeft';
 import AppAsideRight from '../../components/appAsideRight/appAsideRight';
 import AppCenter from '../../components/appCenter/appCenter';
+import CatePages from '../../components/catePages/catePages';
 import ArticleDisplay from '../../components/articleDisplay/articleDisplay';
 import Editor from '../../components/editor/editor';
 import { reducer, ContextData, initData } from "../../useReducer" //引入useReducer文件
@@ -54,6 +55,9 @@ const App: FC<{}> = () => {
                 <Switch>
                   <Route path='/article/:id'>
                     <ArticleDisplay />
+                  </Route>
+                  <Route path='/categories'>
+                    <CatePages />
                   </Route>
                   <Route path='/'>
                     <AppCenter />
