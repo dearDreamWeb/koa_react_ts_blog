@@ -6,7 +6,7 @@ const $axios = axios.create({
   timeout: 10000, // 请求超时的时间
   // headers: {'X-Custom-Header': 'foobar'}      // 请求的headers
 });  
-
+axios.defaults.withCredentials = true;
 
 export default async function request(url: string, options: any = {}) {
   if (options.method === "post") {

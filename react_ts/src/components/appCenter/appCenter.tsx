@@ -60,7 +60,10 @@ const AppCenter: FC<Props> = (props) => {
                                 </li>
                                 <li className={styles.lists_item_footer_item}>
                                     <FontAwesomeIcon icon={faFolder} />
-                                    <span className={styles.categoryName}>
+                                    <span
+                                        className={styles.categoryName}
+                                        onClick={() => history.push({ pathname: '/categories', state: { id: item.categoryId } })}
+                                    >
                                         {item.categories[0].categoryName}
                                     </span>
                                 </li>

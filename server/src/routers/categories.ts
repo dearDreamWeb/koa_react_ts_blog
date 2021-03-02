@@ -43,7 +43,43 @@ module.exports = (router, crud) => {
 
     // 获取各个分类详情
     router.get('/category/queryAllCategory', async (ctx: any) => {
-        console.log(ctx.session.info)
-        ctx.body = {}
+        const { id } = ctx.query;
+        const { categories } = ctx.session.info;
+        if (id) {
+            let cateData = await crud("SELECT * FROM `articles` WHERE categoryId =? ORDER BY createdDate DESC", [id]);
+            let cateInfo: any = {};
+            for (let i = 0; i < categories.length; i++) {
+                if (categories[i].categoryId === Number(id)) {
+                    cateInfo = categories[i];
+                }
+            }
+            ctx.body = {
+                success: true,
+                data: [{
+                    categoryId: cateInfo.categoryId,
+                    categoryName: cateInfo.categoryName,
+                    lists: cateData.data,
+                    total: cateData.data.length,
+                    cateLists: categories
+                }]
+            }
+            return;
+        }
+
+        let resultData = [];
+        for (let i = 0; i < categories.length; i++) {
+            let cateData = await crud("SELECT * FROM `articles` WHERE categoryId =? ORDER BY createdDate DESC", [categories[i].categoryId])
+            resultData.push({
+                categoryId: categories[i].categoryId,
+                categoryName: categories[i].categoryName,
+                lists: cateData.data,
+                total: cateData.data.length,
+                cateLists: categories
+            })
+        }
+        ctx.body = {
+            success: true,
+            data: resultData
+        }
     })
 }

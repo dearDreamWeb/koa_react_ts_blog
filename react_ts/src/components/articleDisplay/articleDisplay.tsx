@@ -2,7 +2,7 @@ import React, { FC, useRef, useEffect, useState, useContext } from 'react';
 import styles from './articleDisplay.scss';
 import { withRouter } from 'react-router-dom';
 import { ContextData } from "../../useReducer" //引入useReducer文件
-import { getArticlePreNext } from '../../service/api/articles';
+import { getArticlePreNext, getArticleInfo } from '../../service/api/articles';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -22,25 +22,28 @@ const ArticleDisplay: FC<Props> = (props) => {
 
     const articleWrap = useRef<HTMLElement>(null);
 
-    // 获取上一篇和下一篇
     useEffect(() => {
-        getArticlePreNext({ articleId: match.params.id }).then((res) => {
+        getPreN(match.params.id);
+        getArtInfo(match.params.id);
+    }, [match.params.id])
+
+    // 获取上一篇和下一篇
+    const getPreN = (id: number) => {
+        getArticlePreNext({ articleId: id }).then((res) => {
             if (res.success) {
                 setPrevNext([res.prevInfo, res.nextInfo])
             }
         }).catch(err => console.log(err));
-    }, [match.params.id])
+    }
 
     // 获取文章的信息
-    useEffect(() => {
-        if (state.articles.length > 0) {
-            state.articles.forEach((item: any) => {
-                if (item.articleId === match.params.id) {
-                    setArticleInfo(item);
-                }
-            })
-        }
-    }, [state, match.params.id])
+    const getArtInfo = (id: number) => {
+        getArticleInfo({ articleId: id }).then((res) => {
+            if (res.success) {
+                setArticleInfo(res.info);
+            }
+        }).catch(err => console.log(err));
+    }
 
     // 把文章填充进去
     useEffect(() => {

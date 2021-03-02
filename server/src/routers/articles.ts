@@ -81,13 +81,18 @@ module.exports = (router, crud) => {
       newArticlesData[i]['categories'] = cateData.data;
       newArticlesData[i]['tags'] = newTagData;
     }
+    // 去掉文章的内容存入session，否则内容过大会是session失效
+    let sessionArticlesData = JSON.parse(JSON.stringify(newArticlesData));
+    sessionArticlesData = sessionArticlesData.map((item => {
+      delete item.articleContent;
+      return item;
+    }))
     // 存入session
     ctx.session.info = {
       categories: cateData.data,
       tags: tagData.data,
-      articles: newArticlesData
+      articles: sessionArticlesData
     }
-
 
     ctx.body = {
       success: true,
@@ -130,6 +135,22 @@ module.exports = (router, crud) => {
           title: articlesData.data[currentArticleIndex + 1].articleTitle
         }
         : null,
+    }
+  })
+
+  // 获取指定文章的信息
+  router.get('/article/getArticleInfo', async (ctx: any) => {
+    const { articleId } = ctx.query;
+    let data = await crud("SELECT * FROM `articles` WHERE articleId=?", [articleId]);
+    if (!data.success) {
+      ctx.body = {
+        success: false
+      }
+      return;
+    }
+    ctx.body = {
+      success: true,
+      info: data.data[0]
     }
   })
 };

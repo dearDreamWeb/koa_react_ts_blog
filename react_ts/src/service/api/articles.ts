@@ -26,3 +26,12 @@ export async function getArticlePreNext(options: any) {
     data,
   });
 }
+
+// 获取指定文章的信息
+export async function getArticleInfo(options: any) {
+  const data = { ...options };
+  return request("/article/getArticleInfo", {
+    method: "get",
+    data,
+  });
+}
