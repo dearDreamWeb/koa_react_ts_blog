@@ -24,6 +24,7 @@ const ArticleDisplay: FC<Props> = (props) => {
     const articleWrap = useRef<HTMLElement>(null);
 
     useEffect(() => {
+        console.log(location.state)
         getPreN(match.params.id, location.state ? location.state.type : null, location.state ? location.state.typeId : null);
         getArtInfo(match.params.id);
     }, [match.params.id, location.state])
@@ -63,7 +64,13 @@ const ArticleDisplay: FC<Props> = (props) => {
                             <li
                                 key={index}
                                 className={styles.article_prevNext_item}
-                                onClick={() => history.push(`/article/${item.articleId}`)}
+                                onClick={() => history.push({
+                                    pathname: `/article/${item.articleId}`,
+                                    state: {
+                                        type: location.state ? location.state.type : null,
+                                        typeId: location.state ? location.state.typeId : null
+                                    }
+                                })}
                             >
                                 {index === 0 && item ? <FontAwesomeIcon icon={faChevronLeft} /> : ''}
                                 <span className={styles.article_prevNext_item_text}>

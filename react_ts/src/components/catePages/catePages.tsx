@@ -17,7 +17,7 @@ const CatePages: FC<Props> = (props) => {
     // <!-- 获取是state和dispatch -->
     const { state, dispatch } = useContext<any>(ContextData);
 
-    const [cateData, setCateData] = useState<any[]>([]);
+    const [cateData, setCateData] = useState<any>({});
 
     const initData = (id?: number) => {
         queryAllCategory({ id }).then((res) => {
@@ -34,14 +34,14 @@ const CatePages: FC<Props> = (props) => {
     return (
         <div className={styles.catePages_wrap}>
             <h1 className={styles.header}>分类</h1>
-            <p className={styles.header_text}>共 {cateData.length} 个分类</p>
+            <p className={styles.header_text}>共 {cateData.total} 个分类</p>
             <ul className={styles.cate_title_wrap}>
                 <li
                     className={styles.cate_title_item}
                     onClick={() => initData()}
                 >全部</li>
                 {
-                    cateData.length > 0 && cateData[0].cateLists.map((item: any) => {
+                    cateData.cateLists && cateData.cateLists.map((item: any) => {
                         return (
                             <li
                                 key={item.categoryId}
@@ -56,7 +56,7 @@ const CatePages: FC<Props> = (props) => {
             </ul>
             <ul className={styles.cate_wrap}>
                 {
-                    cateData.map((item: any) => {
+                    cateData.cateLists && cateData.cateLists.map((item: any, index: number) => {
                         return (
                             <li
                                 key={item.categoryId}

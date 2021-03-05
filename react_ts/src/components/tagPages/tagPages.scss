@@ -1,0 +1,25 @@
+.catePages_wrap {
+  padding: 15px 0;
+  .header {
+    margin-top: 21px;
+    margin-bottom: 10.5px;
+    font-size: 30px;
+  }
+  .header_text {
+    color: #777;
+    margin: 0 0 10.5px;
+  }
+  .cate_title_wrap {
+    display: flex;
+    .cate_title_item {
+      margin: 0 20px;
+      cursor: pointer;
+      &:first-child {
+        margin: 0 20px 0 0;
+      }
+      &:hover {
+        color: #fc7097;
+      }
+    }
+  }
+}
