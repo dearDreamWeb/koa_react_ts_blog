@@ -105,10 +105,24 @@ module.exports = (router, crud) => {
 
   // 获取文章的上一篇和下一篇
   router.get('/article/getArticlePreNext', async (ctx: any) => {
-    const { articleId } = ctx.query;
+    const { articleId, type, typeId } = ctx.query;
     let currentArticleIndex: number = 0;
-    let articlesData = await crud("SELECT * FROM `articles` WHERE state =? ORDER BY `createdDate` desc", [0]);
     let addRead = await crud("UPDATE `articles` SET readCount=readCount+1 WHERE articleId = ?", [articleId]);
+    let articlesData: any = [];
+
+    // 判断从分类，标签等过来的，重新规划
+    switch (type) {
+      case null:
+        articlesData = await crud("SELECT * FROM `articles` WHERE state =? ORDER BY `createdDate` desc", [0]);
+        break;
+      case 'category':
+        articlesData = await crud("SELECT * FROM `articles` WHERE state =? AND categoryId=? ORDER BY `createdDate` desc", [0, typeId]);
+        break;
+      default:
+        articlesData = await crud("SELECT * FROM `articles` WHERE state =? ORDER BY `createdDate` desc", [0]);
+        break;
+    }
+
     if (!articlesData.success || !addRead.success) {
       ctx.body = {
         success: false,

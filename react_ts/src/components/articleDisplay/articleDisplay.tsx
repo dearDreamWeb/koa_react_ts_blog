@@ -10,10 +10,11 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 interface Props {
     match: any;
     history: any;
+    location: any;
 }
 
 const ArticleDisplay: FC<Props> = (props) => {
-    const { match, history } = props;
+    const { match, history, location } = props;
     const [articleInfo, setArticleInfo] = useState<any>({});
     const [prevNext, setPrevNext] = useState<any[]>([]);
 
@@ -23,13 +24,13 @@ const ArticleDisplay: FC<Props> = (props) => {
     const articleWrap = useRef<HTMLElement>(null);
 
     useEffect(() => {
-        getPreN(match.params.id);
+        getPreN(match.params.id, location.state ? location.state.type : null, location.state ? location.state.typeId : null);
         getArtInfo(match.params.id);
-    }, [match.params.id])
+    }, [match.params.id, location.state])
 
     // 获取上一篇和下一篇
-    const getPreN = (id: number) => {
-        getArticlePreNext({ articleId: id }).then((res) => {
+    const getPreN = (id: number, type: string | null, typeId: number | null) => {
+        getArticlePreNext({ articleId: id, type, typeId }).then((res) => {
             if (res.success) {
                 setPrevNext([res.prevInfo, res.nextInfo])
             }

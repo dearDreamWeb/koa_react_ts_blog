@@ -74,7 +74,10 @@ const CatePages: FC<Props> = (props) => {
                                                 <li
                                                     key={list.articleId}
                                                     className={styles.cate_item_list}
-                                                    onClick={() => history.push(`/article/${list.articleId}`)}
+                                                    onClick={() => history.push({
+                                                        pathname: `/article/${list.articleId}`,
+                                                        state: { type: 'category', typeId: item.categoryId }
+                                                    })}
                                                 >
                                                     <span>{moment(list.createdDate).format('YYYY-MM-DD')}</span>
                                                     <span>{list.articleTitle}</span>
