@@ -22,6 +22,16 @@
       }
     }
   }
+  .cate_item_lists_wrap {
+    .cate_item_list {
+      padding: 8px 16px;
+      color: #777;
+      cursor: pointer;
+      &:hover {
+        color: #000;
+      }
+    }
+  }
   .cate_wrap {
     .cate_item {
       padding: 10px 0;

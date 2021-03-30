@@ -54,43 +54,68 @@ const CatePages: FC<Props> = (props) => {
                     })
                 }
             </ul>
-            <ul className={styles.cate_wrap}>
-                {
-                    cateData.cateLists && cateData.cateLists.map((item: any, index: number) => {
-                        return (
-                            <li
-                                key={item.categoryId}
-                                className={styles.cate_item}
-                            >
-                                <h2 className={styles.cate_item_title}>
-                                    <FontAwesomeIcon icon={faFolder} />
-                                    <span className={styles.cate_item_title_name}>{item.categoryName}</span>
-                                    <span className={styles.cate_item_total}>({item.total}篇)</span>
-                                </h2>
-                                <ul className={styles.cate_item_lists_wrap}>
-                                    {
-                                        item.lists.map((list: any) => {
-                                            return (
-                                                <li
-                                                    key={list.articleId}
-                                                    className={styles.cate_item_list}
-                                                    onClick={() => history.push({
-                                                        pathname: `/article/${list.articleId}`,
-                                                        state: { type: 'category', typeId: item.categoryId }
-                                                    })}
-                                                >
-                                                    <span>{moment(list.createdDate).format('YYYY-MM-DD')}</span>
-                                                    <span>{list.articleTitle}</span>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                </ul>
-                            </li>
-                        )
-                    })
-                }
-            </ul>
+            {
+                cateData.categoryId ? (
+                    <ul className={styles.cate_item_lists_wrap}>
+                        {
+                            cateData.lists.map((list: any) => {
+                                return (
+                                    <li
+                                        key={list.articleId}
+                                        className={styles.cate_item_list}
+                                        onClick={() => history.push({
+                                            pathname: `/article/${list.articleId}`,
+                                            state: { type: 'category', typeId: list.categoryId }
+                                        })}
+                                    >
+                                        <span>{moment(list.createdDate).format('YYYY-MM-DD')}</span>
+                                        <span>{list.articleTitle}</span>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                ) : (
+                    <ul className={styles.cate_wrap}>
+                        {
+                            cateData.cateLists && cateData.cateLists.map((item: any, index: number) => {
+                                return (
+                                    <li
+                                        key={item.categoryId}
+                                        className={styles.cate_item}
+                                    >
+                                        <h2 className={styles.cate_item_title}>
+                                            <FontAwesomeIcon icon={faFolder} />
+                                            <span className={styles.cate_item_title_name}>{item.categoryName}</span>
+                                            <span className={styles.cate_item_total}>({item.total}篇)</span>
+                                        </h2>
+                                        <ul className={styles.cate_item_lists_wrap}>
+                                            {
+                                                item.lists.map((list: any) => {
+                                                    return (
+                                                        <li
+                                                            key={list.articleId}
+                                                            className={styles.cate_item_list}
+                                                            onClick={() => history.push({
+                                                                pathname: `/article/${list.articleId}`,
+                                                                state: { type: 'category', typeId: item.categoryId }
+                                                            })}
+                                                        >
+                                                            <span>{moment(list.createdDate).format('YYYY-MM-DD')}</span>
+                                                            <span>{list.articleTitle}</span>
+                                                        </li>
+                                                    )
+                                                })
+                                            }
+                                        </ul>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                )
+            }
+
         </div>
     )
 }

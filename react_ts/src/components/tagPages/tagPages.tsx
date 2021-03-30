@@ -23,8 +23,8 @@ const TagPages: FC<Props> = (props) => {
     }
 
     useEffect(() => {
-
-    }, [location.state])
+        console.log(state)
+    }, [state])
 
     return (
         <div className={styles.catePages_wrap}>

@@ -62,13 +62,13 @@ module.exports = (router, crud) => {
             }
             ctx.body = {
                 success: true,
-                data: [{
+                data: {
                     categoryId: cateInfo.categoryId,
                     categoryName: cateInfo.categoryName,
                     lists: cateData.data,
                     total: cateData.data.length,
                     cateLists: categories
-                }]
+                }
             }
             return;
         }
